@@ -54,7 +54,7 @@
               "description": "Quote a video before making it",
               "prompt": "How much would a 5 second 480p video of a paper boat sailing down a rainy street cost on Revana?",
               "tools_triggered": "get_quote",
-              "expected_behavior": "Calls get_quote and tells the user the exact price (about $0.55) without making or charging anything."
+              "expected_behavior": "Calls get_quote and tells the user the exact price (about $0.45 at today's prices) without making or charging anything."
             },
             {
               "description": "Make a video after the user confirms the price",
@@ -97,11 +97,13 @@
           ]
         },
         "commerce": false,
-        "commerce_description": "This plugin does not sell anything. Videos are paid from credits the user already holds on their Revana account; buying credits is not available in ChatGPT."
+        "commerce_description": "This plugin does not sell anything. Videos are paid from credits the user already holds on their Revana account; buying credits is not available in ChatGPT.",
+        "demo_recording_url": "https://github.com/Aribk7/revana-chatgpt-plugin/releases/download/v1.0.0/revana-chatgpt-demo.mp4"
       },
       "publication": {
         "release_notes": "Initial release: quotes, Seedance 2.5 video generation, progress and download links, Nemesis restaging, balance and model prices."
       }
     }
-  }
+  },
+  "repository": "https://github.com/Aribk7/revana-chatgpt-plugin"
 }
