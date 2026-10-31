@@ -1,0 +1,107 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "revana",
+  "version": "1.0.0",
+  "description": "Make AI videos with Seedance 2.5 from ChatGPT on your Revana account: free price quotes first, then the video and a download link. Failed videos are not charged.",
+  "author": {
+    "name": "Revana",
+    "email": "hello@revana.si",
+    "url": "https://revana.si"
+  },
+  "homepage": "https://revana.si/mcp",
+  "license": "Proprietary",
+  "keywords": [
+    "video",
+    "ai video",
+    "seedance",
+    "video generation"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Revana",
+        "shortDescription": "Make AI videos with Seedance",
+        "longDescription": "Revana lets ChatGPT make AI videos with ByteDance Seedance 2.5 on your Revana account.\n\n- Get a free, exact quote for any video before anything is spent; ChatGPT tells you the price and waits for your yes.\n- Make text-to-video clips, or start from a picture or reference images you provide, at 480p, 720p or 1080p, with or without sound.\n- Check progress and get a download link when the video is ready.\n- Restage an existing clip with Nemesis (same moves and camera, new people, products or places), also quoted first.\n- See your balance and the prices of Revana's other video, image and music models.\n\nVideos are paid from the credits on your Revana account, and a video that fails is never charged. Sign in with your Revana account (Google or email). Revana is at revana.si.",
+        "developerName": "Revana",
+        "category": "Creativity",
+        "capabilities": [
+          "Quote videos",
+          "Make videos",
+          "Check video progress",
+          "Restage clips",
+          "Check balance",
+          "List models and prices"
+        ],
+        "websiteURL": "https://revana.si",
+        "supportURL": "https://revana.si/mcp",
+        "privacyPolicyURL": "https://revana.si/privacy",
+        "termsOfServiceURL": "https://revana.si/terms",
+        "defaultPrompt": [
+          "Make a 5 second video of a paper boat in the rain. Tell me the price first.",
+          "How much would a 10 second 720p video cost?",
+          "Restage my clip with Nemesis Lite."
+        ],
+        "brandColor": "#B8461C",
+        "brandColorDark": "#F26A2E",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "onboardingSkill": "./skills/get-started/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Quote a video before making it",
+              "prompt": "How much would a 5 second 480p video of a paper boat sailing down a rainy street cost on Revana?",
+              "tools_triggered": "get_quote",
+              "expected_behavior": "Calls get_quote and tells the user the exact price (about $0.55) without making or charging anything."
+            },
+            {
+              "description": "Make a video after the user confirms the price",
+              "prompt": "Make a 5 second 480p 16:9 video of a paper boat sailing down a rainy street. Tell me the price first.",
+              "tools_triggered": "get_quote, generate_video, get_video, get_video_link",
+              "expected_behavior": "Quotes the price, waits for the user's yes, calls generate_video with max_cost_usd at or above the quote, waits with get_video until it succeeds, then shares a download link from get_video_link."
+            },
+            {
+              "description": "Check the account balance",
+              "prompt": "How many Revana credits do I have left?",
+              "tools_triggered": "get_balance",
+              "expected_behavior": "Calls get_balance and reports the available balance in dollars and credits."
+            },
+            {
+              "description": "Compare model prices",
+              "prompt": "Which Revana video models are cheapest per second at 720p?",
+              "tools_triggered": "list_models",
+              "expected_behavior": "Calls list_models with kind video and summarises the cheapest per-second 720p prices, noting that Seedance 2.5 is the model this plugin can make."
+            },
+            {
+              "description": "Quote a Nemesis restage of a clip",
+              "prompt": "I have a 5 second 720p clip. What would it cost to restage it with Nemesis Lite?",
+              "tools_triggered": "quote_nemesis",
+              "expected_behavior": "Calls quote_nemesis with model nemesis-lite, clip_seconds 5 and resolution 720p and reports the price without charging anything."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Buying credits is not available in ChatGPT",
+              "prompt": "Buy $50 of Revana credits with my card."
+            },
+            {
+              "description": "Unrelated payment request",
+              "prompt": "Transfer $100 from my Revana balance to my bank account."
+            },
+            {
+              "description": "Making a video without agreeing to a price",
+              "prompt": "Just make a 30 second 1080p video right now, don't bother telling me the price."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell anything. Videos are paid from credits the user already holds on their Revana account; buying credits is not available in ChatGPT."
+      },
+      "publication": {
+        "release_notes": "Initial release: quotes, Seedance 2.5 video generation, progress and download links, Nemesis restaging, balance and model prices."
+      }
+    }
+  }
+}
